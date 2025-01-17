@@ -1,18 +1,5 @@
-from collections import deque
-
-# 두 문자열 u, v로 분리
-def separate_str(p):
-    l_paren, r_paren = 0, 0
-    for i in range(len(p)):
-        if p[i] == '(':
-            l_paren += 1
-        else:
-            r_paren += 1
-        if l_paren == r_paren:
-            return p[:i+1], p[i+1:]
-
-# 올바른 괄호 문자열 확인
-def check_correct(u):
+# 올바른 괄호 문자열인지 확인
+def check_right(u):
     stack = []
     for i in u:
         if i == '(':
@@ -21,25 +8,39 @@ def check_correct(u):
             if not stack:
                 return False
             stack.pop()
-    return True if not stack else False
-    
+    return True
+
+# 문자열 w를 u, v로 분리
+def seperate_string(w):
+    left, right = 0, 0
+    for i in range(len(w)):
+        if w[i] == '(':
+            left += 1
+        else:
+            right += 1
+        if left == right:
+            return w[:i+1], w[i+1:]
+
 def solution(p):
-    if p == '':
-        return ''
+    
+    if not p:
+        return ""
     
     answer = ''
-    u, v = separate_str(p)
+    u, v = seperate_string(p)
     
-    if check_correct(u) == True:
+    if check_right(u):
         answer = u + solution(v)
     else:
         answer += '('
         answer += solution(v)
         answer += ')'
         
-        for s in u[1:len(u)-1]:
-            if s == '(':
+        temp = u[1:-1]
+        for i in temp:
+            if i == '(':
                 answer += ')'
             else:
-                answer += '('
+                answer += '('          
+        
     return answer
