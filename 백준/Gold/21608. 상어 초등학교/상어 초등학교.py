@@ -33,9 +33,6 @@ def bfs(num):
                         elif classroom[nx][ny] == 0:
                             empty_count += 1
                 candidates.append((like_count, empty_count, i, j))
-                
-    if not candidates:
-        return
     
     # 정렬 (좋아하는 학생 수 -> 비어있는 칸 수 -> 행의 번호 -> 열의 번호)
     candidates.sort(key = lambda x : (-x[0], -x[1], x[2], x[3]))
