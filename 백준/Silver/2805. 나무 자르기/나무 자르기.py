@@ -6,7 +6,6 @@ trees = list(map(int, input().split()))
 
 left = 0
 right = max(trees)
-result = 0
 
 while left <= right:
     total = 0
@@ -15,11 +14,12 @@ while left <= right:
     for tree in trees:
         if tree > mid:
             total += tree - mid
+        if total > m:
+            break
 
     if total < m:
         right = mid - 1
     else:
-        result = mid
         left = mid + 1
 
-print(result)
+print(right)
