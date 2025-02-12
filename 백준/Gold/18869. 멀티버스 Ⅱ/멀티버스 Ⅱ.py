@@ -2,10 +2,10 @@ import sys
 input = sys.stdin.readline
 
 m, n = map(int, input().split())
-earth = [list(map(int, input().split())) for _ in range(m)]
+universe = [list(map(int, input().split())) for _ in range(m)]
 
 rank = []
-for row in earth:
+for row in universe:
     sorted_rank = {val: idx for idx, val in enumerate(sorted(set(row)))}
     rank.append(tuple(sorted_rank[val] for val in row))
 
