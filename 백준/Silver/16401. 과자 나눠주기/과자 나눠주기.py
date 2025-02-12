@@ -12,16 +12,10 @@ while left <= right:
     total = 0
     mid = (left + right) // 2
 
-    for snack in snacks:
-        if snack >= mid:
-            total += snack // mid
-            if total >= m:
-                break
-    
-    if total < m:
-        right = mid - 1
-    else:
+    if sum([snack // mid for snack in snacks]) >= m:
         result = mid
         left = mid + 1
+    else:
+        right = mid - 1
 
 print(result)
