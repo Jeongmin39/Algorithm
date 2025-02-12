@@ -15,7 +15,7 @@ while left <= right:
     for snack in snacks:
         if snack >= mid:
             total += snack // mid
-            if total > m:
+            if total >= m:
                 break
     
     if total < m:
