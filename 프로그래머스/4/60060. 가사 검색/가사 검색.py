@@ -1,44 +1,28 @@
+from bisect import bisect_left, bisect_right
+
+def count_by_range(array, left_value, right_value):
+    left_index = bisect_left(array, left_value)
+    right_index = bisect_right(array, right_value)
+    return right_index - left_index
+
+array = [[] for _ in range(10001)]
+reversed_array = [[] for _ in range(10001)]
+
 def solution(words, queries):
-    origin_map = {}
-    reverse_map = {}
-
-    for word in words:
-        length = len(word)
-
-        if length not in origin_map:
-            origin_map[length] = []
-        if length not in reverse_map:
-            reverse_map[length] = []
-
-        origin_map[length].append(word)
-        reverse_map[length].append(word[::-1])
-
-    for length in origin_map:
-        origin_map[length].sort()
-        reverse_map[length].sort()
-
     answer = []
+    for word in words:
+        array[len(word)].append(word)
+        reversed_array[len(word)].append(word[::-1])
+        
+    for i in range(10001):
+        array[i].sort()
+        reversed_array[i].sort()
+    
     for query in queries:
-        if query[0] == '?':
-            array = reverse_map.get(len(query), [])
-            query = query[::-1]
+        if query[-1] == '?':
+            cnt = count_by_range(array[len(query)], query.replace('?', 'a'), query.replace('?', 'z'))
         else:
-            array = origin_map.get(len(query), [])
-
-        if not array:
-            answer.append(0)
-        else:
-            answer.append(lower_bound(array, query.replace('?', 'z')) - lower_bound(array, query.replace('?', 'a')))
-
+            cnt = count_by_range(reversed_array[len(query)], query[::-1].replace('?', 'a'), query[::-1].replace('?', 'z'))
+        answer.append(cnt)
+        
     return answer
-
-def lower_bound(array, string):
-    start, end = 0, len(array)
-
-    while start < end:
-        mid = (start + end) // 2
-        if string <= array[mid]:
-            end = mid
-        else:
-            start = mid + 1
-    return start
