@@ -1,3 +1,5 @@
+import sys
+input = sys.stdin.readline
 n, k = map(int, input().split())
 vertical = [0] * 1000002
 
