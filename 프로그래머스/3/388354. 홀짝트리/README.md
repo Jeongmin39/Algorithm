@@ -1,6 +1,6 @@
 # [level 3] 홀짝트리 - 388354 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/388354) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/388354?language=python3) 
 
 ### 성능 요약
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2025년 03월 06일 00:33:15
+2025년 03월 06일 00:33:34
 
 ### 문제 설명
 
