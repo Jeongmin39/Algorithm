@@ -1,5 +1,7 @@
-N = int(input())
-arr = list(map(int, input().split()))
+import sys
+
+N = int(sys.stdin.readline().strip())
+arr = list(map(int, sys.stdin.readline().split()))
 NGE = [-1] * N
 stack = []
 
