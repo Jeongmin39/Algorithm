@@ -1,56 +1,59 @@
-def make_map(lock, M, Size):
-    Map = [[2] * Size for _ in range(Size)]
-    Point = 0 # 홈 부분의 개수
-    lock_x, lock_y = 0, 0
-    # 실제 자물쇠 부분
-    for i in range(M - 1, Size - (M - 1)):
-        for j in range(M - 1, Size - (M - 1)):
-            Map[i][j] = lock[lock_x][lock_y]
-            if Map[i][j] == 0:
-                Point += 1
-            lock_y += 1
-        lock_y = 0
-        lock_x += 1
-    return Map, Point
-
-def check_key_and_lock(Sx, Sy, key, Map, M):
-    Check = 0
-    x_Idx, y_Idx = 0, 0
-    for x in range(Sx, Sx + M):
-        for y in range(Sy, Sy + M):
-            if Map[x][y] == 1 and key[x_Idx][y_Idx] == 1:
-                return -1
-            if Map[x][y] == 0 and key[x_Idx][y_Idx] == 0:
-                return -1
-            if Map[x][y] == 0 and key[x_Idx][y_Idx] == 1:
-                Check += 1
-            y_Idx += 1
-        y_Idx = 0
-        x_Idx += 1
-    return Check
+# 2차원 배열 회전
+def rotate(key, d):
+    n = len(key)
+    result = [[0] * n for _ in range(n)]
     
-def rotate_key(key, M):
-    temp = [[0] * M for _ in range(M)]
-    for i in range(M):
-        for j in range(M):
-            temp[i][j] = key[M - 1 - j][i]
-    return temp
-
-def move_map(key, lock, M, N):
-    Size = N + 2 * (M - 1)
-    Map, Point = make_map(lock, M, Size)
-    for _ in range(4):
-        for i in range(M + N - 1):
-            for j in range(M + N - 1):
-                Result = check_key_and_lock(i, j, key, Map, M)
-                if Result == Point:
-                    return True
-        key = rotate_key(key, M)
-    return False
-
+    if d % 4 == 1: # 90도 회전
+        for r in range(n):
+            for c in range(n):
+                result[c][n-r-1] = key[r][c]
+    elif d % 4 == 2: # 180도 회전
+        for r in range(n):
+            for c in range(n):
+                result[n-r-1][n-c-1] = key[r][c]
+    elif d % 4 == 3: # 270도 회전
+        for r in range(n):
+            for c in range(n):
+                result[n-c-1][r] = key[r][c]
+    else:
+        for r in range(n):
+            for c in range(n):
+                result[r][c] = key[r][c]
+    
+    return result
+    
+# 자물쇠 부분 모두 1인지 확인
+def check(lock):
+    n = len(lock) // 3
+    for i in range(n, n*2):
+        for j in range(n, n*2):
+            if lock[i][j] != 1:
+                return False
+    return True
+    
 def solution(key, lock):
+    m = len(key)
+    n = len(lock)
+    temp_lock = [[0] * (n*3) for _ in range(n*3)]
     
-    M = len(key)
-    N = len(lock)
+    # 확장한 lock의 중앙 부분에 기존 lock 넣기
+    for i in range(n):
+        for j in range(n):
+            temp_lock[n+i][n+j] = lock[i][j]
     
-    return move_map(key, lock, M, N)
+    for i in range(1, n*2):
+        for j in range(1, n*2):
+            for d in range(4):
+                rotate_key = rotate(key, d)
+                for x in range(m):
+                    for y in range(m):
+                        temp_lock[i+x][j+y] += rotate_key[x][y]
+                
+                if check(temp_lock):
+                    return True
+                
+                for x in range(m):
+                    for y in range(m):
+                        temp_lock[i+x][j+y] -= rotate_key[x][y]
+                        
+    return False
