@@ -15,6 +15,7 @@ class Solution {
             q2.offer(n);
             sum2 += n;
         }
+        // 총합이 홀수면 불가능
         if ((sum1 + sum2) % 2 != 0) return -1;
         
         int count = 0;
